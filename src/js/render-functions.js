@@ -5,7 +5,7 @@ const gallery = document.querySelector('.gallery');
 const loader = document.querySelector('.loader')
 
 export function createGallery(images) {
-    return images.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `
+    const markup = images.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `
         <li class='gallery-item'>
             <a class='gallery-link' href='${largeImageURL}'>
                 <img
@@ -36,9 +36,11 @@ export function createGallery(images) {
             </div>
         </li>
     `).join('');
+    gallery.innerHTML = markup;
+    lbox.refresh();
 }
 
-new SimpleLightbox('.gallery a', {
+const lbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
     captionDelay: 250,
 })

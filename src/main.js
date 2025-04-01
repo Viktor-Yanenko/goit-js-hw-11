@@ -4,7 +4,6 @@ import { getImagesByQuery } from './js/pixabay-api';
 import { createGallery, clearGallery, showLoader, hideLoader} from './js/render-functions'
 
 const form = document.querySelector('.form');
-const container = document.querySelector('.gallery')
 form.addEventListener('submit', handleSubmit);
 
 hideLoader();
@@ -24,11 +23,13 @@ function handleSubmit(event) {
                 })
                 return hideLoader();
             }
-            container.innerHTML = createGallery(response.data.hits);
+            createGallery(response.data.hits);
             return hideLoader();
         })
         .catch(error => {
-            iziToast.error({})
+            iziToast.error({
+                message: error,
+            })
         })
     clearGallery();    
     form.reset();
