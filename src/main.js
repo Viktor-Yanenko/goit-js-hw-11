@@ -30,7 +30,6 @@ function handleSubmit(event) {
           message:
             'Sorry, there are no images matching your search query. Please try again!',
           position: 'topRight',
-          iconUrl: './img/errorIcon.png',
         });
         return hideLoader();
       }
@@ -44,7 +43,6 @@ function handleSubmit(event) {
         backgroundColor: '#ef4040',
         message: error,
         position: 'topRight',
-        iconUrl: './img/errorIcon.png',
       });
     });
   clearGallery();
