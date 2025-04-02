@@ -1,7 +1,12 @@
-import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 import { getImagesByQuery } from './js/pixabay-api';
-import { createGallery, clearGallery, showLoader, hideLoader} from './js/render-functions'
+import {
+  createGallery,
+  clearGallery,
+  showLoader,
+  hideLoader,
+} from './js/render-functions';
 
 const form = document.querySelector('.form');
 form.addEventListener('submit', handleSubmit);
@@ -9,28 +14,39 @@ form.addEventListener('submit', handleSubmit);
 hideLoader();
 
 function handleSubmit(event) {
-    event.preventDefault();
-    showLoader();
+  event.preventDefault();
+  showLoader();
 
-    const query = event.currentTarget.elements['search-text'];
-    const queryValue = query.value.trim();
+  const query = event.currentTarget.elements['search-text'];
+  const queryValue = query.value.trim();
 
-    getImagesByQuery(queryValue)
-        .then(response => {
-            if (response.data.total === 0) {
-                iziToast.error({
-                    message: 'Sorry, there are no images matching your search query. Please try again!'
-                })
-                return hideLoader();
-            }
-            createGallery(response.data.hits);
-            return hideLoader();
-        })
-        .catch(error => {
-            iziToast.error({
-                message: error,
-            })
-        })
-    clearGallery();    
-    form.reset();
+  getImagesByQuery(queryValue)
+    .then(response => {
+      if (response.data.total === 0) {
+        iziToast.error({
+          messageColor: '#fafafb',
+          titleColor: '#fafafb',
+          backgroundColor: '#ef4040',
+          message:
+            'Sorry, there are no images matching your search query. Please try again!',
+          position: 'topRight',
+          iconUrl: './img/errorIcon.png',
+        });
+        return hideLoader();
+      }
+      createGallery(response.data.hits);
+      return hideLoader();
+    })
+    .catch(error => {
+      iziToast.error({
+        messageColor: '#fafafb',
+        titleColor: '#fafafb',
+        backgroundColor: '#ef4040',
+        message: error,
+        position: 'topRight',
+        iconUrl: './img/errorIcon.png',
+      });
+    });
+  clearGallery();
+  form.reset();
 }
