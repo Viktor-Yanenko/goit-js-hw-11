@@ -15,10 +15,23 @@ hideLoader();
 
 function handleSubmit(event) {
   event.preventDefault();
-  showLoader();
 
   const query = event.currentTarget.elements['search-text'];
   const queryValue = query.value.trim();
+
+  if (!queryValue) {
+    iziToast.warning({
+      messageColor: '#fafafb',
+      titleColor: '#fafafb',
+      backgroundColor: '#ffa000',
+      message: 'Please enter a search query!',
+      position: 'topRight',
+    });
+    return;
+  }
+
+  showLoader();
+  clearGallery();
 
   getImagesByQuery(queryValue)
     .then(response => {
@@ -31,10 +44,8 @@ function handleSubmit(event) {
             'Sorry, there are no images matching your search query. Please try again!',
           position: 'topRight',
         });
-        return hideLoader();
       }
       createGallery(response.data.hits);
-      return hideLoader();
     })
     .catch(error => {
       iziToast.error({
@@ -44,7 +55,9 @@ function handleSubmit(event) {
         message: error,
         position: 'topRight',
       });
+    })
+    .finally(() => {
+      hideLoader();
     });
-  clearGallery();
   form.reset();
 }
